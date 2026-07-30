@@ -20,6 +20,7 @@ import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import { SectionHeading, Eyebrow } from "@/components/ui/SectionHeading";
 import PageHero from "@/components/sections/PageHero";
+import HeroVideo from "@/components/sections/HeroVideo";
 import CTASection from "@/components/sections/CTASection";
 import StatBand from "@/components/sections/StatBand";
 import Testimonials from "@/components/home/Testimonials";
@@ -122,10 +123,24 @@ export default function AboutPage() {
         intro="Rimaya was built on a simple idea: growing businesses deserve a partner who handles the essential, behind-the-scenes work accurately and without fuss — so they can get on with what they do best."
         primary={{ label: "Work with us", href: "/contact" }}
         secondary={{ label: "See our services", href: "/#services" }}
+        media={
+          <HeroVideo
+            src="/videos/ravi-intro.mp4"
+            poster="/images/ravi-intro-poster.webp"
+            label="Meet Ravi Kalra, our Director"
+          />
+        }
       />
 
-      {/* Proof band — facts before claims. */}
-      <StatBand stats={proof} />
+      {/* Proof band — facts before claims. The Trustpilot chip sits under the
+          row, tied to the 4.4★ client rating. */}
+      <StatBand
+        stats={proof}
+        reviewsLink={{
+          href: site.trustpilot.reviewUrl,
+          label: "See our reviews on Trustpilot",
+        }}
+      />
 
       {/* Meet the director — the founder's photo leads the introduction, so the
           page opens on a real, named person rather than a faceless company. */}
