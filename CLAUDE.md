@@ -239,8 +239,10 @@ Opening `logo.webp` in a viewer makes it *look* like it has its own navy tile �
 that's the viewer compositing the alpha; the corners are measurably `alpha 0`.
 
 **Favicons** (`app/favicon.ico`, `app/icon.png`, `app/apple-icon.png`) are generated
-from the R-mark. `favicon.ico` is a real 16/32/48/256 multi-size ICO — browsers
-downscale a lone 256px entry badly. `apple-icon` sits on a **white** tile because
+from the logo emblem (`Images/Logo_final.png`). `favicon.ico` is a real
+16/32/48/256 multi-size ICO — browsers downscale a lone 256px entry badly.
+`icon.png` and `favicon.ico` keep the emblem's transparency; `apple-icon` sits on
+a **white** tile because
 iOS composites transparency onto black.
 
 ---
