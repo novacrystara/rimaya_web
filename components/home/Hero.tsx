@@ -54,6 +54,8 @@ export default function Hero() {
             Business, supported.
           </h1>
 
+
+
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
             Rimaya runs accurate, compliant payroll, finds you the right people,
             and advises you when it counts — so you can focus on running your
