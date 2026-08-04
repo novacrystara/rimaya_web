@@ -16,8 +16,8 @@ export const site = {
   responsePromise: "We reply within 12 hours",
   address: {
     label: "Corporate Office",
-    line1: "Rimaya Ltd, 22 Westfield Garden",
-    line2: "Romford, RM6 4BY, UK",
+    line1: "Rimaya Ltd, Columbine Way",
+    line2: "Romford, RM3 0XN, UK",
   },
   credentials: {
     established: "2022",

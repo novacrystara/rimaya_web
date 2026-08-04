@@ -83,13 +83,8 @@ const credentials = [
 const values = [
   {
     icon: Scale,
-    title: "Ethical",
-    body: "We do right by workers and clients alike — fair treatment and honest advice, every time.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Compliant",
-    body: "Careful and correct. Your payroll and hiring stay on the right side of the rules.",
+    title: "Integrity First",
+    body: "Every decision is guided by honesty, fairness, transparency, and strict compliance — earning the trust of clients, candidates, employees, and government authorities.",
   },
   {
     icon: Timer,
@@ -111,7 +106,16 @@ const values = [
 // NOTE: placeholder team — names only, with an icon stand-in for each headshot.
 // Drop each member's real photo into public/images/ and swap the icon tile for
 // an <Image> when the photos are available.
-const team = ["Ian", "VJ", "Sudha", "Beena", "Params", "Ravi", "Ann", "Ray", "Guy", "Jonah"];
+const team = [
+  "Sunil",
+  "Ravi B.",
+  "Priyanka",
+  "Ian",
+  "Kamal",
+  "Manasse",
+  "Ravi V.",
+  "Apoorva",
+];
 
 export default function AboutPage() {
   return (
@@ -309,7 +313,9 @@ export default function AboutPage() {
             intro="A team you actually get to speak to — no call centres, no ticket numbers."
             align="center"
           />
-          <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          {/* Four across, so the eight names fill two complete rows — a five-up
+              grid left the second row three-wide and visibly ragged. */}
+          <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4">
             {team.map((name, i) => (
               <Reveal as="article" key={name} delay={Math.min(i, 6) * 0.05}>
                 <div className="group flex flex-col items-center gap-3 border border-hairline bg-white p-4 text-center transition-shadow duration-300 ease-[var(--ease-out-soft)] hover:card-shadow-hover">

@@ -22,9 +22,9 @@ const orgSchema = {
     "Rimaya provides payroll, recruitment, and consulting services for UK businesses.",
   address: {
     "@type": "PostalAddress",
-    "streetAddress": "22 Westfield Garden",
+    "streetAddress": "Columbine Way",
     addressLocality: "Romford",
-    postalCode: "RM6 4BY",
+    postalCode: "RM3 0XN",
     addressCountry: "GB",
   },
   aggregateRating: {

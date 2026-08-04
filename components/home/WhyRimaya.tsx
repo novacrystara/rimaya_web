@@ -1,7 +1,6 @@
 import {
   PiggyBank,
   Timer,
-  ShieldCheck,
   Network,
   SlidersHorizontal,
   Scale,
@@ -26,27 +25,24 @@ type Reason = {
   feature?: boolean;
 };
 
-// Order is the hierarchy the client gave (a → e). Ethical leads, so it takes the
-// navy anchor tile; Cost efficiency closes the set. The reasons that aren't in
-// that list are kept commented out rather than deleted — they're still good
-// copy if the list is ever widened again.
+// Order is the hierarchy the client gave. "Integrity First" folds the former
+// separate "Ethical" and "Compliant" entries into one value and leads, so it
+// takes the navy anchor tile; Cost efficiency closes the set. The reasons that
+// aren't in that list are kept commented out rather than deleted — they're
+// still good copy if the list is ever widened again.
 const reasons: Reason[] = [
   {
     icon: Scale,
-    title: "Ethical",
-    body: "We do right by workers and clients alike — fair treatment and honest advice, every time.",
+    title: "Integrity First",
+    body: "Every decision is guided by honesty, fairness, transparency, and strict compliance — earning the trust of clients, candidates, employees, and government authorities.",
     feature: true,
     span: "lg:col-span-2",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Compliant",
-    body: "Careful and correct. Your payroll and hiring stay on the right side of the rules.",
   },
   {
     icon: Timer,
     title: "Quickest turnaround",
     body: "Fast responses and fast delivery. We reply quickly and move at your pace.",
+    span: "lg:col-span-2",
   },
   {
     icon: HeartHandshake,
@@ -85,9 +81,9 @@ const reasons: Reason[] = [
 ];
 
 /**
- * A bento of five reasons on a four-column grid. The navy "Ethical" anchor
- * carries the top of the client's stated hierarchy, and the spans are chosen so
- * every row fills exactly — no trailing gaps: rows of (2+1+1) and (2+2).
+ * A bento of four reasons on a four-column grid. The navy "Integrity First"
+ * anchor carries the top of the client's stated hierarchy, and every tile spans
+ * two columns so each row fills exactly — no trailing gaps: (2+2) and (2+2).
  */
 export default function WhyRimaya() {
   return (

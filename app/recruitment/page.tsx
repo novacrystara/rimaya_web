@@ -65,6 +65,7 @@ const industries = [
   "Not for profit",
   "Banking",
   "Construction",
+  "Manufacturing",
 ];
 
 export default function RecruitmentPage() {

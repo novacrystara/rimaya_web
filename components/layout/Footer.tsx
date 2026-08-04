@@ -21,8 +21,8 @@ const linkGroups: { heading: string; links: { label: string; href: string }[] }[
     links: [
       { label: "Browse Jobs", href: "/jobs" },
       { label: "Submit your CV", href: "/submit-cv" },
-      // The homepage FAQ was removed; /contact is where the accordion lives now.
-      { label: "Common questions", href: "/contact#faq" },
+      // "Common questions" pointed at /contact#faq. The FAQ accordion has since
+      // been removed from the contact page, so the anchor no longer exists.
     ],
   },
   {
@@ -74,8 +74,8 @@ export default function Footer() {
                 straight onto the navy band it all but disappears (measured: the
                 wordmark inside it sinks into the background entirely). The white
                 plaque is what lets the real mark be used here. */}
-            <span className="inline-flex bg-white p-3">
-              <Logo size={60} />
+            <span className="inline-flex bg-white p-3.5">
+              <Logo size={92} />
             </span>
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-white/70">
               Accurate, compliant payroll, fast recruitment, and expert

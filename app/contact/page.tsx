@@ -1,68 +1,26 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Link from "next/link";
-import {
-  MapPin,
-  Clock,
-  BadgeCheck,
-  CalendarCheck,
-  ShieldCheck,
-  Building2,
-  Mail,
-  FileUp,
-  ArrowRight,
-} from "lucide-react";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
 import PageHero from "@/components/sections/PageHero";
-import FAQ from "@/components/sections/FAQ";
 import ContactForm from "@/components/contact/ContactForm";
-import { LinkedinIcon } from "@/components/ui/SocialIcons";
-import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Rimaya for payroll, recruitment, or consulting. Submit your CV, email our team, or connect on LinkedIn — a named person replies personally, not a ticket queue.",
+    "Get in touch with Rimaya for payroll, recruitment, or consulting. Tell us what you need and a named person replies personally, not a ticket queue.",
 };
 
 /**
  * The page most visitors judge us on, and the last step before a lead exists.
- * Two deliberate moves:
  *
- * 1. The form asks quote-shaped questions, so an enquiry arrives priceable.
- * 2. "What happens next" + credentials answer the two silent objections
- *    ("will anyone actually reply?", "are these people real?") right beside the
- *    submit button, where the hesitation happens. The office line, address, and
- *    WhatsApp (via the FAQ) remain for anyone who'd rather talk than type.
+ * Pared back at the client's request: the enquiry-routing cards, the office
+ * panel, the LinkedIn strip, and the FAQ accordion are all gone, so the page is
+ * now hero → one form. That leaves the form carrying the whole conversion on
+ * its own — anything added back should earn its place beside it.
  */
 
 export default function ContactPage() {
-  const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-    "Hi Rimaya, I'd like to talk about your services.",
-  )}`;
-
-  const steps = [
-    {
-      title: "You send it",
-      body: "One short form. Nothing you send is passed on, sold, or used for a mailing list.",
-    },
-    {
-      title: "A person reads it",
-      body: `A named member of the team picks it up — ${site.responsePromise.toLowerCase()}, on any working day.`,
-    },
-    {
-      title: "You get a straight answer",
-      body: "A clear, itemised quote or an honest “we're not the right fit”. No pressure either way.",
-    },
-  ];
-
-  const credentials = [
-    { icon: CalendarCheck, label: `Established ${site.credentials.established}` },
-    { icon: BadgeCheck, label: site.credentials.vat },
-    { icon: ShieldCheck, label: site.credentials.sponsor },
-  ];
-
   return (
     <>
       <PageHero
@@ -72,215 +30,30 @@ export default function ContactPage() {
         intro="Tell us what you need — payroll, people, or advice — and we'll come straight back to you with a real answer. No jargon, no pressure, no sales calls."
       />
 
-      {/* Two ways in — candidates and businesses routed to the right place. */}
-      <section className="bg-white py-14 sm:py-16">
-        <Container>
-          <div className="grid gap-5 md:grid-cols-2">
-            {/* Candidate enquiry — send a CV. */}
-            <Link
-              href="/submit-cv"
-              className="group relative flex h-full flex-col overflow-hidden border border-hairline bg-white p-7 transition-shadow duration-200 hover:card-shadow-hover"
-            >
-              <span
-                aria-hidden
-                className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-action transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
-              />
-              <span className="inline-flex h-12 w-12 items-center justify-center bg-brand text-white">
-                <FileUp className="h-5 w-5" />
-              </span>
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-                Candidate enquiry
-              </p>
-              <p className="mt-1.5 text-lg font-semibold text-ink transition-colors group-hover:text-action">
-                Submit your CV
-              </p>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
-                Looking for work? Send us your CV — we&apos;re hiring across
-                sectors and will match you to openings, including roles before
-                they&apos;re advertised.
-              </p>
-              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-action">
-                Submit your CV
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </span>
-            </Link>
-
-            {/* Business enquiry — email us. */}
-            <a
-              href={`mailto:${site.email}`}
-              className="group relative flex h-full flex-col overflow-hidden border border-hairline bg-white p-7 transition-shadow duration-200 hover:card-shadow-hover"
-            >
-              <span
-                aria-hidden
-                className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-action transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
-              />
-              <span className="inline-flex h-12 w-12 items-center justify-center bg-brand text-white">
-                <Mail className="h-5 w-5" />
-              </span>
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-                Business enquiry
-              </p>
-              <p className="mt-1.5 text-lg font-semibold text-ink transition-colors group-hover:text-action">
-                {site.email}
-              </p>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
-                Payroll, recruitment, or consulting — email us and a named person
-                will read it and reply personally.
-              </p>
-              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-action">
-                Send an email
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </span>
-            </a>
-          </div>
-
-          {/* LinkedIn — the company page. */}
-          <div className="mt-5 flex flex-col items-center justify-center gap-3 border border-hairline bg-surface px-6 py-5 text-center sm:flex-row sm:gap-4">
-            <p className="text-sm text-muted">
-              Prefer to keep in touch on social? We&apos;re on LinkedIn.
-            </p>
-            <a
-              href={site.socials.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 border border-hairline bg-white px-4 py-2.5 text-sm font-semibold text-brand transition-colors hover:border-brand hover:bg-brand hover:text-white"
-            >
-              <LinkedinIcon className="h-4 w-4" />
-              Follow Rimaya on LinkedIn
-            </a>
-          </div>
-        </Container>
-      </section>
-
-      {/* Form + reassurance */}
+      {/* Form. The enquiry cards, office sidebar, LinkedIn strip, and FAQ were
+          all removed at the client's request, so the form runs on its own —
+          capped rather than full-bleed, because a form field wider than ~50rem
+          is harder to read, not easier. */}
       <section className="border-y border-hairline bg-soft-blue py-16 sm:py-20">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[1.3fr_0.9fr] lg:gap-14">
-            {/* Form */}
-            <Reveal>
-              <div className="border border-hairline bg-white p-6 card-shadow sm:p-9">
-                <h2 className="text-2xl font-semibold text-ink sm:text-3xl">
-                  Contact Us
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Answer what you can — only your name, email, and a message are
-                  required. The rest just means we can price it accurately first
-                  time.
-                </p>
-                <div className="mt-8">
-                  <Suspense fallback={<div className="h-[32rem]" />}>
-                    <ContactForm />
-                  </Suspense>
-                </div>
+          <Reveal className="mx-auto max-w-3xl">
+            <div className="border border-hairline bg-white p-6 card-shadow sm:p-9">
+              <h2 className="text-2xl font-semibold text-ink sm:text-3xl">
+                Contact Us
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                Only your name, email, and a message are required — the rest
+                just helps us come back with a straight answer first time.
+              </p>
+              <div className="mt-8">
+                <Suspense fallback={<div className="h-[32rem]" />}>
+                  <ContactForm />
+                </Suspense>
               </div>
-            </Reveal>
-
-            {/* Sidebar */}
-            <Reveal delay={0.1} className="space-y-5">
-              {/* What happens next — kills the "will anyone reply?" doubt. */}
-              {/* <div className="border border-hairline bg-white p-7">
-                <h3 className="text-lg font-semibold text-ink">
-                  What happens next
-                </h3>
-                <ol className="mt-6 space-y-6">
-                  {steps.map((s, i) => (
-                    <li key={s.title} className="relative flex gap-4">
-                      Connector — every step but the last.
-                      {i < steps.length - 1 && (
-                        <span
-                          aria-hidden
-                          className="absolute left-[13px] top-8 h-full w-px bg-hairline"
-                        />
-                      )}
-                      <span className="relative z-10 inline-flex h-7 w-7 shrink-0 items-center justify-center bg-brand text-xs font-semibold text-white">
-                        {i + 1}
-                      </span>
-                      <div>
-                        <p className="text-sm font-semibold text-ink">{s.title}</p>
-                        <p className="mt-1 text-sm leading-relaxed text-muted">
-                          {s.body}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </div> */}
-
-              {/* Response promise — the single most reassuring fact we have. */}
-              {/* <div className="flex items-start gap-3.5 border border-action/25 bg-action/5 p-6">
-                <Clock className="mt-0.5 h-5 w-5 shrink-0 text-action" />
-                <div>
-                  <p className="text-sm font-semibold text-ink">
-                    {site.responsePromise}
-                  </p>
-                  <p className="mt-1 text-sm leading-relaxed text-muted">
-                    Usually much sooner. You&apos;re not joining a ticket queue.
-                  </p>
-                </div>
-              </div> */}
-
-              {/* A real address is a trust signal — show it, don't bury it. */}
-              <div className="border border-hairline bg-white p-7">
-                <h3 className="text-lg font-semibold text-ink">Our office</h3>
-                <ul className="mt-5 space-y-5 text-sm">
-                  <li className="flex items-start gap-3">
-                    <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                    <div>
-                      <p className="font-medium text-ink">
-                        {site.address.label}
-                      </p>
-                      <p className="mt-0.5 leading-relaxed text-muted">
-                        {site.address.line1}
-                        <br />
-                        {site.address.line2}
-                      </p>
-                    </div>
-                  </li>
-                  {/* <li className="flex items-start gap-3">
-                    <Building2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                    <div>
-                      <p className="font-medium text-ink">Office line</p>
-                      <a
-                        href={site.officePhoneHref}
-                        className="text-muted transition-colors hover:text-action"
-                      >
-                        {site.officePhone}
-                      </a>
-                    </div>
-                  </li> */}
-                  <li className="flex items-start gap-3">
-                    <Clock className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                    <div>
-                      <p className="font-medium text-ink">Opening hours</p>
-                      <p className="mt-0.5 text-muted">
-                        Monday to Friday, 9:00 – 18:00
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-
-                {/* Credentials — "are these people real?", answered. */}
-                <ul className="mt-6 flex flex-wrap gap-2 border-t border-hairline pt-6">
-                  {credentials.map(({ icon: Icon, label }) => (
-                    <li
-                      key={label}
-                      className="inline-flex items-center gap-1.5 border border-hairline bg-surface px-2.5 py-1.5 text-[11px] font-medium text-ink/75"
-                    >
-                      <Icon className="h-3.5 w-3.5 text-brand" />
-                      {label}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          </div>
+            </div>
+          </Reveal>
         </Container>
       </section>
-
-      {/* The questions that otherwise arrive as an email we have to answer.
-          Its CTA points at WhatsApp here — "Ask us a question" → /contact would
-          be a link to this very page. */}
-      <FAQ ctaLabel="Ask us on WhatsApp" ctaHref={whatsappHref} />
     </>
   );
 }

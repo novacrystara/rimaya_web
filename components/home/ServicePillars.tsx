@@ -32,7 +32,7 @@ const pillars: Pillar[] = [
       "Timely Payroll Processing",
       "HMRC & Immigration compliances",
       "Tax efficient package",
-      "lexible payment terms with clients",
+      "Flexible payment terms with clients",
     ],
     href: "/payroll",
     cta: "Explore Payroll",

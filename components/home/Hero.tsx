@@ -42,7 +42,6 @@ export default function Hero() {
       <Container className="relative py-14 sm:py-16 lg:py-20">
         <Reveal className="mx-auto max-w-4xl text-center">
           <span className="inline-flex items-center gap-2 border border-hairline bg-white/80 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-brand backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 bg-action" aria-hidden />
             {site.descriptor}
           </span>
 

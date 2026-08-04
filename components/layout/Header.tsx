@@ -130,8 +130,10 @@ export default function Header() {
                 scrolled ? "h-[68px]" : "h-20",
               )}
             >
-              {/* Logo — shrinks with the bar. */}
-              <Logo size={scrolled ? 46 : 54} />
+              {/* Logo — shrinks with the bar. Sized to leave a few px of
+                  clearance inside the 80px / 68px bar; go much past this and
+                  the bar itself has to grow (and so does the spacer below). */}
+              <Logo size={scrolled ? 60 : 72} />
 
               {/* Nav — right, generously spaced, no background. The links carry
                   themselves on type and the underline that wipes in on hover. */}
@@ -258,7 +260,7 @@ export default function Header() {
 
             {/* Mobile bar */}
             <div className="flex h-16 items-center justify-between lg:hidden">
-              <Logo size={46} />
+              <Logo size={58} />
               <button
                 type="button"
                 aria-label={mobileOpen ? "Close menu" : "Open menu"}

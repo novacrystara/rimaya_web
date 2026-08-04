@@ -11,10 +11,11 @@ import { cn } from "@/lib/utils";
 /**
  * The primary lead capture on the site — most visitors who convert do it here.
  *
- * It asks for what a quote actually needs (service, headcount, company) rather
- * than a bare name/email/message, so an enquiry lands ready to price instead of
- * starting a round-trip. Everything past the first three fields stays optional:
- * a required field is a place to abandon, and a half-complete lead beats none.
+ * Deliberately short: name, email, and a message are all that's required, and
+ * everything else is optional. A required field is a place to abandon, and a
+ * half-complete lead beats none. (The service-intent chips and the headcount
+ * question were removed at the client's request — intent still travels with the
+ * enquiry, taken from the `?intent=` the visitor arrived with.)
  *
  * NOTE: the honeypot owns the field name `company`, so the real company field is
  * `organisation`. Don't rename either without changing app/api/contact/route.ts.
@@ -25,7 +26,6 @@ const schema = z.object({
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().optional(),
   organisation: z.string().optional(),
-  headcount: z.string().optional(),
   subject: z.string().optional(),
   message: z.string().min(10, "Please include a short message"),
   company: z.string().max(0).optional(), // honeypot
@@ -41,32 +41,20 @@ const intentLabels: Record<string, string> = {
   general: "General enquiry",
 };
 
-// The chips a visitor picks from. `key` matches the ?intent= values used across
-// the site, so arriving from a service page pre-selects the right one.
-const intents = [
-  { key: "payroll", label: "Payroll" },
-  { key: "consulting", label: "Consulting" },
-  { key: "hire", label: "Talent Sourcing" },
-  
-  { key: "general", label: "Something else" },
-] as const;
-
-const headcounts = ["1–9", "10–49", "50–199", "200+", "Not sure yet"];
+// The intents the rest of the site links in with (`?intent=`). No longer a set
+// of chips the visitor picks from — it's read off the URL so the enquiry still
+// arrives tagged with whichever page sent them.
+const intentKeys = ["payroll", "consulting", "hire", "general"] as const;
 
 export default function ContactForm() {
   const params = useSearchParams();
   const urlIntent = params.get("intent") ?? "general";
 
-  // Only pre-select when the URL actually said something. Arriving cold with
-  // "Something else" already lit reads as an assumption about the visitor —
-  // null leaves the question genuinely open, and submits as "general".
-  const initialChip = intents.some((i) => i.key === urlIntent)
+  const intent = intentKeys.some((k) => k === urlIntent)
     ? urlIntent
     : urlIntent === "quote"
       ? "payroll" // the pricing CTAs land here; payroll is the flagship
-      : null;
-
-  const [intent, setIntent] = useState<string | null>(initialChip);
+      : "general";
 
   const {
     register,
@@ -91,11 +79,9 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
-          intent: intent ?? "general",
+          intent,
           subject:
-            values.subject ||
-            (intent ? intentLabels[intent] : undefined) ||
-            intentLabels.general,
+            values.subject || intentLabels[intent] || intentLabels.general,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -124,34 +110,6 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
-      {/* Intent — asked first, because it changes what we need to know. */}
-      <fieldset>
-        <legend className="mb-2.5 block text-sm font-medium text-ink">
-          What can we help with?
-        </legend>
-        <div className="flex flex-wrap gap-2">
-          {intents.map((i) => {
-            const active = intent === i.key;
-            return (
-              <button
-                key={i.key}
-                type="button"
-                onClick={() => setIntent(i.key)}
-                aria-pressed={active}
-                className={cn(
-                  "min-h-[44px] cursor-pointer border px-4 py-2.5 text-sm font-medium transition-colors",
-                  active
-                    ? "border-action bg-action text-white"
-                    : "border-hairline bg-white text-ink/75 hover:border-action hover:text-action",
-                )}
-              >
-                {i.label}
-              </button>
-            );
-          })}
-        </div>
-      </fieldset>
-
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Full name" error={errors.name?.message} htmlFor="c-name">
           <input
@@ -203,28 +161,6 @@ export default function ContactForm() {
           />
         </Field>
       </div>
-
-      {/* Headcount is the single biggest driver of a payroll price. */}
-      <Field
-        label="How many people do you employ?"
-        hint="optional — helps us quote"
-        error={errors.headcount?.message}
-        htmlFor="c-headcount"
-      >
-        <select
-          id="c-headcount"
-          defaultValue=""
-          {...register("headcount")}
-          className={cn(inputClass(!!errors.headcount), "cursor-pointer")}
-        >
-          <option value="">Select a range…</option>
-          {headcounts.map((h) => (
-            <option key={h} value={h}>
-              {h}
-            </option>
-          ))}
-        </select>
-      </Field>
 
       <Field label="Message" error={errors.message?.message} htmlFor="c-message">
         <textarea
