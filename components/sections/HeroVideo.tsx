@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Play } from "lucide-react";
 
 /**
@@ -13,6 +13,11 @@ import { Play } from "lucide-react";
  * Native controls are the deliberate choice over a hand-rolled bar: they are
  * accessible, keyboard-driven, and identical to every other video the visitor
  * has ever used — the professional default, not a bespoke gimmick.
+ *
+ * Scrolling the video out of view pauses it. A voice talking on from somewhere
+ * off-screen is the single most irritating thing a site can do, and the visitor
+ * has already moved on. It only ever pauses — never auto-resumes — because
+ * sound starting on its own as you scroll back is the same sin in reverse.
  */
 export default function HeroVideo({
   src,
@@ -24,13 +29,35 @@ export default function HeroVideo({
   label?: string;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(false);
+
+  // "Playback has begun and hasn't finished" — drives the native controls and
+  // hides the poster overlay. Deliberately NOT cleared on pause: a pause (by
+  // the viewer, or by scrolling away) should leave the player exactly where it
+  // is, so scrolling back resumes from the same frame instead of throwing the
+  // viewer back to the poster and losing their place.
+  const [engaged, setEngaged] = useState(false);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && !v.paused) v.pause();
+      },
+      // Fires once less than a third of the player is still on screen — late
+      // enough that a small scroll nudge doesn't stop playback mid-sentence.
+      { threshold: 0.3 },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
 
   const start = () => {
     const v = ref.current;
     if (!v) return;
     v.play();
-    setPlaying(true);
+    setEngaged(true);
   };
 
   return (
@@ -41,16 +68,15 @@ export default function HeroVideo({
         poster={poster}
         preload="metadata"
         playsInline
-        controls={playing}
+        controls={engaged}
         controlsList="nodownload noplaybackrate"
         disablePictureInPicture
         className="h-full w-full object-cover"
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        onEnded={() => setPlaying(false)}
+        onPlay={() => setEngaged(true)}
+        onEnded={() => setEngaged(false)}
       />
 
-      {!playing && (
+      {!engaged && (
         <button
           type="button"
           onClick={start}

@@ -62,7 +62,8 @@ export default function Testimonials() {
               </Button>
             </div>
             <p className="text-xs text-muted">
-              Share your experience — reviews you post on Trustpilot appear here.
+              Every review below is a real, verified review from our Trustpilot
+              profile.
             </p>
           </div>
         </Reveal>
@@ -81,8 +82,13 @@ export default function Testimonials() {
               align to the page grid; the rail scrolls within it. */}
           <Container className="relative">
             <TestimonialsCarousel items={testimonials} />
+            {/* The arrows are hidden below sm (no room for the gutters), so the
+                hint must not promise them there. */}
             <p className="mt-8 text-center text-xs text-muted">
-              Swipe, or use the arrows, to see more.
+              <span className="sm:hidden">Swipe to see more.</span>
+              <span className="hidden sm:inline">
+                Swipe, or use the arrows, to see more.
+              </span>
             </p>
           </Container>
         </Reveal>
