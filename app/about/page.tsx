@@ -154,7 +154,10 @@ export default function AboutPage() {
                     fill
                     placeholder="blur"
                     sizes="(max-width: 1024px) 100vw, 40vw"
-                    className="object-cover object-[center_20%]"
+                    // The portrait is a native 4:5, the same ratio as the frame,
+                    // so it fills edge to edge with nothing cropped. `object-cover`
+                    // stays only as a guard against sub-pixel rounding.
+                    className="object-cover"
                   />
                 </div>
                 {/* Anchored name plate — reads as a caption on the photo. */}
