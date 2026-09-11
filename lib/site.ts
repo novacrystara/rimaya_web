@@ -33,21 +33,38 @@ export const site = {
     // instagram: "https://www.instagram.com/", // TODO
   },
   trustpilot: {
-    // Public review profile and the "leave a review" flow. These work today —
-    // the evaluate URL is what the "Write a review" button points at.
+    // Public review profile — the fallback link inside every TrustBox, and
+    // where the 4.4 stat tile on the homepage points.
     reviewUrl: "https://uk.trustpilot.com/review/rimaya.co.uk",
-    writeReviewUrl: "https://uk.trustpilot.com/evaluate/rimaya.co.uk",
-    // ⚠️ Fill BOTH to switch the testimonials section over to LIVE Trustpilot
-    // reviews that update automatically as people post them. Get them from a
-    // Trustpilot Business account (Integrations → TrustBox):
-    //   businessUnitId — Business Unit ID for rimaya.co.uk
-    //   templateId     — the TrustBox template you pick (e.g. Carousel/Grid)
-    // While either is empty the section shows the curated testimonials below.
-    businessUnitId: "", // TODO
-    templateId: "", // TODO
-    // Locale + the on-widget height. Safe defaults; adjust to the template.
     locale: "en-GB",
-    widgetHeight: "500px",
+
+    // ── TrustBox credentials ──────────────────────────────────────────────
+    // From Trustpilot Business → Integrations → TrustBox → "Get code".
+    //
+    // These are hard-coded on purpose. They are identifiers, not secrets: a
+    // TrustBox works by printing them into the page HTML for every visitor,
+    // so view-source exposes them regardless of where they live in the repo.
+    // The only Trustpilot credential that must NEVER be here is an API key or
+    // API secret from their developer section — that reads and writes account
+    // data and belongs in server-only env. A TrustBox snippet never contains
+    // one.
+    businessUnitId: "64d3b819f282bf16d4fab6ca",
+
+    // "Review Collector" — the 52px "Review us on ★ Trustpilot" strip. It is a
+    // call-to-action ONLY; it does not display any reviews.
+    collector: {
+      templateId: "56278e9abfbbba0bdcd568bc",
+      token: "34fac06b-8668-46b0-9d3a-6b5b82acb54e",
+      height: "52px",
+    },
+
+    // Optional second TrustBox that actually SHOWS reviews — pick Carousel,
+    // Grid, Mini, etc. in the TrustBox library and paste its template ID here.
+    // While empty, the testimonials section carries only the collector above.
+    reviews: {
+      templateId: "", // TODO — see CLAUDE.md §6
+      height: "500px",
+    },
   },
 } as const;
 

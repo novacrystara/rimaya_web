@@ -138,11 +138,12 @@ app/
 components/
   layout/    Header (logo left · centred nav · CTA right), Footer, BackToTop
   home/      Hero, TrustStrip, ServicePillars, WhyRimaya, CandidateBand,
-             Testimonials (+ TrustpilotWidget)
+             Testimonials (official Trustpilot TrustBoxes only)
   sections/  PageHero, FeatureCards, CTASection   ← reusable across pages
   jobs/      JobCard, JobsExplorer (client filters), ApplicationForm (client)
   contact/   ContactForm (client, reads ?intent=)
-  ui/        Button, Container, Logo, Reveal, SectionHeading, SocialIcons
+  ui/        Button, Container, Logo, Reveal, SectionHeading, SocialIcons,
+             TrustBox (any Trustpilot template — collector or reviews)
 
 lib/
   site.ts    Company details, nav, services   ⚠️ contains TODO placeholders
@@ -173,15 +174,24 @@ lib/
   homepage teaser, and each detail page (which are statically generated). Add/remove
   objects only. Upgrade path: swap for a CMS/DB behind the same types.
 - **Company details** → edit [`lib/site.ts`](lib/site.ts).
-- **Testimonials** → `components/home/Testimonials.tsx`. The section shows a curated,
-  single-lane marquee of placeholder quotes **and always renders a "Write a review
-  on Trustpilot" button** (points at `site.trustpilot.writeReviewUrl`). To show
-  *live* Trustpilot reviews that update themselves as customers post them, set both
-  `trustpilot.businessUnitId` and `trustpilot.templateId` in `lib/site.ts` (from a
-  Trustpilot Business account → TrustBox); the section then swaps the curated cards
-  for the official `TrustpilotWidget`. ⚠️ **Trustpilot reviews cannot be scraped**
-  (their pages 403 all bots) and must never be hand-copied into the array as if real
-  — the widget is the only legitimate way to display them.
+- **Testimonials / Trustpilot** → the section is built **only** from official
+  Trustpilot TrustBoxes (`components/ui/TrustBox.tsx`), configured in
+  `lib/site.ts` → `trustpilot`. Two slots:
+  - **Review Collector** (`collector.templateId` + `collector.token`) — the
+    "Review us on ★ Trustpilot" strip, live now. **A call-to-action only; it
+    shows no reviews.**
+  - **Reviews display** (`reviews.templateId`) — a Carousel/Grid/Mini template
+    that actually renders reviews. **Empty at the time of writing** — fill it
+    and the section grows a live feed with no code change.
+  ⚠️ The business unit ID, template IDs and token are **hard-coded on purpose**:
+  a TrustBox prints them into the public HTML, so they're identifiers, not
+  secrets. The only Trustpilot credential that must never be in the repo is an
+  API key/secret from their developer section (server-only env, if ever
+  needed). ⚠️ **Trustpilot reviews cannot be scraped**
+  (their pages 403 all bots) and **must never be hand-copied into the site as
+  if live** — the TrustBox is the only legitimate way to display them. A
+  hand-copied card rail was built and then removed (commit history has it);
+  don't bring it back.
 
 ---
 
@@ -268,7 +278,7 @@ Search for `TODO` and `NOTE`.
 | Contact details (phone, email, address, company/VAT no., socials) | `lib/site.ts` | 🔴 |
 | Final domain (breaks SEO/sitemap if wrong) | `lib/site.ts` → `url` | 🔴 |
 | Recruitment stats (500+, 1,000+ etc.) | `app/recruitment/page.tsx` | 🟠 |
-| Testimonials — curated placeholders shown until the live Trustpilot TrustBox is switched on (set `trustpilot.businessUnitId` + `templateId`); otherwise replace them with real, approved reviews | `components/home/Testimonials.tsx`, `lib/site.ts` | 🟠 |
+| Trustpilot reviews template — the collector strip is live, but nothing on the site *displays* reviews until `reviews.templateId` is filled | `lib/site.ts` → `trustpilot.reviews` | 🟠 |
 | Job listings | `lib/jobs.ts` | 🟠 |
 | Payroll scope — confirm full B2B bureau vs narrower | `app/payroll/page.tsx` | 🟠 |
 

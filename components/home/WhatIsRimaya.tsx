@@ -38,8 +38,6 @@ type Stat = {
   suffix?: string;
   decimals?: number;
   label: string;
-  /** Renders the star outside the Counter so it can carry Trustpilot green. */
-  star?: boolean;
   /** Makes the whole tile a link out to the public review profile. */
   href?: string;
 };
@@ -61,7 +59,6 @@ const stats: Stat[] = [
     value: 4.4,
     decimals: 1,
     label: "Client rating",
-    star: true,
     href: site.trustpilot.reviewUrl,
     // sub: "Rated by real clients"
   },
@@ -161,9 +158,6 @@ export default function WhatIsRimaya() {
             className="mx-auto grid max-w-3xl grid-cols-3 gap-x-8 gap-y-10 text-center sm:gap-x-12"
           >
           {stats.map((s) => {
-            // The figure itself. The star sits outside Counter deliberately —
-            // Counter rewrites its own textContent while animating, so anything
-            // inside its suffix can't carry its own colour.
             const figure = (
               <>
                 <p className="font-heading text-4xl font-semibold tracking-tight text-brand sm:text-5xl">
@@ -172,13 +166,6 @@ export default function WhatIsRimaya() {
                     suffix={s.suffix}
                     decimals={s.decimals ?? 0}
                   />
-                  {s.star && (
-                    // Trustpilot green (#00b67a) — the star is the review
-                    // platform's mark here, not a brand accent.
-                    <span className="text-[#00b67a]" aria-hidden>
-                      ★
-                    </span>
-                  )}
                 </p>
                 <p className="mt-3 text-sm font-semibold text-ink">{s.label}</p>
                 {/* <p className="mt-0.5 text-xs text-muted">{s.sub}</p> */}
@@ -188,10 +175,9 @@ export default function WhatIsRimaya() {
             return (
               <StaggerItem as="li" key={s.label}>
                 {s.href ? (
-                  // The visible "See our Trustpilot reviews" caption was
-                  // removed, so the tile itself is the link. It keeps an
-                  // aria-label — without the caption the destination is
-                  // otherwise invisible to a screen reader.
+                  // The tile itself is the link, with no visible caption, so
+                  // the aria-label is the only thing that tells a screen
+                  // reader where it goes.
                   <a
                     href={s.href}
                     target="_blank"

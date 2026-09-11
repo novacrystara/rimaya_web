@@ -136,15 +136,9 @@ export default function AboutPage() {
         }
       />
 
-      {/* Proof band — facts before claims. The Trustpilot chip sits under the
-          row, tied to the 4.4★ client rating. */}
-      <StatBand
-        stats={proof}
-        reviewsLink={{
-          href: site.trustpilot.reviewUrl,
-          label: "See our reviews on Trustpilot",
-        }}
-      />
+      {/* Proof band — facts before claims. Trustpilot itself lives in the
+          Testimonials section further down, via the official TrustBox. */}
+      <StatBand stats={proof} />
 
       {/* Meet the director — the founder's photo leads the introduction, so the
           page opens on a real, named person rather than a faceless company. */}
@@ -332,8 +326,8 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* Social proof — the full homepage testimonials block, Trustpilot CTAs
-          and all, so both pages present reviews identically. */}
+      {/* Social proof — the homepage testimonials block, TrustBox and all, so
+          both pages present Trustpilot identically. */}
       <Testimonials />
 
       <CTASection
